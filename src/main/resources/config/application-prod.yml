@@ -39,10 +39,16 @@ spring:
             cluster-name:
             cluster-nodes: localhost:9300
     mail:
-        host: localhost
-        port: 25
-        username:
-        password:
+        host: smtp.1und1.de
+        port: 587
+        username: info@ramadama.org         #Replace this field with your Gmail username.
+        password: ${MAIL_PASSWORD}           #Replace this field with your Gmail password.
+        protocol: smtp
+        tls: true
+        properties.mail.smtp:
+            auth: true
+            starttls.enable: true
+            ssl.trust: smtp.1und1.de
     thymeleaf:
         cache: true
 
