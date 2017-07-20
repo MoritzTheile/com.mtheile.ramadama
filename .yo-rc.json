@@ -23,7 +23,7 @@
     "enableSocialSignIn": false,
     "clientFramework": "angular2",
     "useSass": false,
-    "clientPackageManager": "yarn",
+    "clientPackageManager": "npm",
     "applicationType": "monolith",
     "testFrameworks": [],
     "jhiPrefix": "jhi",
