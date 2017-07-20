@@ -25,6 +25,7 @@ only screen and (                min-resolution: 2dppx) {
     }
 }
 
+
 .rmdm-action{
 	border: 1px solid rgba(0,0,0,.125);
 	border-radius: 12px;
