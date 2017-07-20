@@ -387,7 +387,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
+                <version>${maven-compiler-plugin.version}</version><!--$NO-MVN-MAN-VER$-->
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
@@ -409,7 +409,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>${maven-enforcer-plugin.version}</version>
+                <version>${maven-enforcer-plugin.version}</version><!--$NO-MVN-MAN-VER$-->
                 <executions>
                     <execution>
                         <id>enforce-versions</id>
@@ -434,7 +434,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven-resources-plugin.version}</version>
+                <version>${maven-resources-plugin.version}</version><!--$NO-MVN-MAN-VER$-->
                 <executions>
                     <execution>
                         <id>default-resources</id>
