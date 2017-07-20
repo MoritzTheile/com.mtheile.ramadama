@@ -33,6 +33,7 @@ only screen and (                min-resolution: 2dppx) {
 
 .rmdm-transition img{
 	width: 200px;
+	margin-top: 44px;
 }
 .rmdm-transition .timestamp-label{
 		position: absolute;
