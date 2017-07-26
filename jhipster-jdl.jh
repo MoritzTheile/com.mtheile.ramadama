@@ -1,0 +1,39 @@
+entity RamadamaUser{
+	
+}
+entity Action{
+}
+
+entity State {
+	pictureData Blob,
+    
+}
+
+relationship OneToOne {
+	User{ramadamaUser} to RamadamaUser
+}
+relationship OneToMany {
+	RamadamaUser{user} to Action
+}
+//relationship OneToMany {
+//	RamadamaUser{user} to State
+//}
+
+
+relationship OneToOne {
+	Action{stateBefore} to State
+}
+relationship OneToOne {
+	Action{stateAfter} to State
+}
+
+
+// Set pagination options
+paginate Action, State with pagination//with infinite-scroll
+
+dto * with mapstruct
+
+// Set service options to all except few
+//service all with serviceImpl except Employee, Job
+// Set an angular suffix
+//angularSuffix * with jdl
