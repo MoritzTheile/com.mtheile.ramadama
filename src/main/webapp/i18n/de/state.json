@@ -1,0 +1,22 @@
+{
+    "ramadamaApp": {
+        "state" : {
+            "home": {
+                "title": "States",
+                "createLabel": "State erstellen",
+                "createOrEditLabel": "State erstellen oder bearbeiten",
+                "search": "Suche nach State"
+            },
+            "created": "State erstellt mit ID {{ param }}",
+            "updated": "State aktualisiert mit ID {{ param }}",
+            "deleted": "State gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll State {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "State"
+            },
+            "pictureData": "Picture Data"
+        }
+    }
+}

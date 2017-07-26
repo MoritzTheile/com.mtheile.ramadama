@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "ramadamaUser",
+            "otherEntityName": "ramadamaUser",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "stateBefore",
+            "otherEntityName": "state",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "action"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "stateAfter",
+            "otherEntityName": "state",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "action"
+        }
+    ],
+    "fields": [],
+    "changelogDate": "20170726100223",
+    "entityTableName": "action",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "no"
+}

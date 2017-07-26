@@ -9,9 +9,9 @@ entity State {
     
 }
 
-relationship OneToOne {
-	User{ramadamaUser} to RamadamaUser
-}
+//relationship OneToOne {
+//	User{ramadamaUser} to RamadamaUser
+//}
 relationship OneToMany {
 	RamadamaUser{user} to Action
 }

@@ -1,0 +1,22 @@
+{
+    "ramadamaApp": {
+        "ramadamaUser" : {
+            "home": {
+                "title": "Ramadama Users",
+                "createLabel": "Create a new Ramadama User",
+                "createOrEditLabel": "Create or edit a Ramadama User",
+                "search": "Search for Ramadama User"
+            },
+            "created": "A new Ramadama User is created with identifier {{ param }}",
+            "updated": "A Ramadama User is updated with identifier {{ param }}",
+            "deleted": "A Ramadama User is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Ramadama User {{ id }}?"
+            },
+            "detail": {
+                "title": "Ramadama User"
+            },
+            "user": "User"
+        }
+    }
+}

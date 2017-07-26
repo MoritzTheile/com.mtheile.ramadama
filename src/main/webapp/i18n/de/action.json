@@ -1,0 +1,24 @@
+{
+    "ramadamaApp": {
+        "action" : {
+            "home": {
+                "title": "Actions",
+                "createLabel": "Action erstellen",
+                "createOrEditLabel": "Action erstellen oder bearbeiten",
+                "search": "Suche nach Action"
+            },
+            "created": "Action erstellt mit ID {{ param }}",
+            "updated": "Action aktualisiert mit ID {{ param }}",
+            "deleted": "Action gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Action {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Action"
+            },
+            "ramadamaUser": "Ramadama User",
+            "stateBefore": "State Before",
+            "stateAfter": "State After"
+        }
+    }
+}

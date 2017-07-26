@@ -1,0 +1,17 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "user",
+            "otherEntityName": "action",
+            "otherEntityRelationshipName": "ramadamaUser"
+        }
+    ],
+    "fields": [],
+    "changelogDate": "20170726100222",
+    "entityTableName": "ramadama_user",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no"
+}

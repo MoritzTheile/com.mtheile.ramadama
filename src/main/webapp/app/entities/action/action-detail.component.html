@@ -1,0 +1,39 @@
+
+<div *ngIf="action">
+    <h2><span jhiTranslate="ramadamaApp.action.detail.title">Action</span> {{action.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="ramadamaApp.action.ramadamaUser">Ramadama User</span></dt>
+        <dd>
+            <div *ngIf="action.ramadamaUserId">
+                <a [routerLink]="['/ramadama-user', action.ramadamaUserId]">{{action.ramadamaUserId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="ramadamaApp.action.stateBefore">State Before</span></dt>
+        <dd>
+            <div *ngIf="action.stateBeforeId">
+                <a [routerLink]="['/state', action.stateBeforeId]">{{action.stateBeforeId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="ramadamaApp.action.stateAfter">State After</span></dt>
+        <dd>
+            <div *ngIf="action.stateAfterId">
+                <a [routerLink]="['/state', action.stateAfterId]">{{action.stateAfterId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'action/'+ action.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
