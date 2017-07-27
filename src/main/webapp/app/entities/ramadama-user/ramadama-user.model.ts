@@ -3,7 +3,7 @@ import { BaseEntity } from './../../shared';
 export class RamadamaUser implements BaseEntity {
     constructor(
         public id?: number,
-        public users?: BaseEntity[],
+        public actions?: BaseEntity[],
     ) {
     }
 }

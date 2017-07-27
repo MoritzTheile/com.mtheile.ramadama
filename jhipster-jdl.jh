@@ -13,7 +13,7 @@ entity State {
 //	User{ramadamaUser} to RamadamaUser
 //}
 relationship OneToMany {
-	RamadamaUser{user} to Action
+	RamadamaUser{action} to Action
 }
 //relationship OneToMany {
 //	RamadamaUser{user} to State

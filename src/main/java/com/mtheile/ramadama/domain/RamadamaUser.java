@@ -30,7 +30,7 @@ public class RamadamaUser implements Serializable {
     @OneToMany(mappedBy = "ramadamaUser")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Action> users = new HashSet<>();
+    private Set<Action> actions = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -40,29 +40,29 @@ public class RamadamaUser implements Serializable {
         this.id = id;
     }
 
-    public Set<Action> getUsers() {
-        return users;
+    public Set<Action> getActions() {
+        return actions;
     }
 
-    public RamadamaUser users(Set<Action> actions) {
-        this.users = actions;
+    public RamadamaUser actions(Set<Action> actions) {
+        this.actions = actions;
         return this;
     }
 
-    public RamadamaUser addUser(Action action) {
-        this.users.add(action);
+    public RamadamaUser addAction(Action action) {
+        this.actions.add(action);
         action.setRamadamaUser(this);
         return this;
     }
 
-    public RamadamaUser removeUser(Action action) {
-        this.users.remove(action);
+    public RamadamaUser removeAction(Action action) {
+        this.actions.remove(action);
         action.setRamadamaUser(null);
         return this;
     }
 
-    public void setUsers(Set<Action> actions) {
-        this.users = actions;
+    public void setActions(Set<Action> actions) {
+        this.actions = actions;
     }
 
     @Override

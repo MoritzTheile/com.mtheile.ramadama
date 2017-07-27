@@ -11,7 +11,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {})
 public interface RamadamaUserMapper extends EntityMapper <RamadamaUserDTO, RamadamaUser> {
     
-    @Mapping(target = "users", ignore = true)
+    @Mapping(target = "actions", ignore = true)
     RamadamaUser toEntity(RamadamaUserDTO ramadamaUserDTO); 
     default RamadamaUser fromId(Long id) {
         if (id == null) {
