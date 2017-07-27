@@ -1,10 +1,14 @@
 package com.mtheile.ramadama.web.rest;
 
-import com.mtheile.ramadama.RamadamaApp;
-import com.mtheile.ramadama.config.audit.AuditEventConverter;
-import com.mtheile.ramadama.domain.PersistentAuditEvent;
-import com.mtheile.ramadama.repository.PersistenceAuditEventRepository;
-import com.mtheile.ramadama.service.AuditEventService;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.Instant;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +24,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.mtheile.ramadama.RamadamaApp;
+import com.mtheile.ramadama.config.audit.AuditEventConverter;
+import com.mtheile.ramadama.domain.PersistentAuditEvent;
+import com.mtheile.ramadama.repository.PersistenceAuditEventRepository;
+import com.mtheile.ramadama.service.AuditEventService;
 
 /**
  * Test class for the AuditResource REST controller.

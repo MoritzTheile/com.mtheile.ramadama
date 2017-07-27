@@ -4,13 +4,15 @@ package com.mtheile.ramadama.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Lob;
-
+ 
 /**
  * A DTO for the State entity.
  */
 public class StateDTO implements Serializable {
 
-    private Long id;
+	private static final long serialVersionUID = 4853519680594912362L;
+
+	private Long id;
 
     @Lob
     private byte[] pictureData;

@@ -16,7 +16,8 @@ public final class PaginationUtil {
     private PaginationUtil() {
     }
 
-    public static HttpHeaders generatePaginationHttpHeaders(Page page, String baseUrl) {
+    @SuppressWarnings("rawtypes")
+	public static HttpHeaders generatePaginationHttpHeaders( Page page, String baseUrl) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(page.getTotalElements()));
@@ -43,7 +44,8 @@ public final class PaginationUtil {
         return UriComponentsBuilder.fromUriString(baseUrl).queryParam("page", page).queryParam("size", size).toUriString();
     }
 
-    public static HttpHeaders generateSearchPaginationHttpHeaders(String query, Page page, String baseUrl) {
+    @SuppressWarnings("rawtypes")
+	public static HttpHeaders generateSearchPaginationHttpHeaders(String query, Page page, String baseUrl) {
         String escapedQuery = query.replace(",", "%2C");
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(page.getTotalElements()));
