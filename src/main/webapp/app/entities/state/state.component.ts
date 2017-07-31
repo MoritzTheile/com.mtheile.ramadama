@@ -14,7 +14,7 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 })
 export class StateComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
+    currentAccount: any;
     states: State[];
     error: any;
     success: any;

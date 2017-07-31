@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { RamadamaSharedModule } from '../shared';
 import { HOME_ROUTE, HomeComponent } from './';
+import {  MyCameraComponent } from './mycamera.component';
 
 @NgModule({
     imports: [
@@ -11,6 +12,7 @@ import { HOME_ROUTE, HomeComponent } from './';
     ],
     declarations: [
         HomeComponent,
+        MyCameraComponent
     ],
     entryComponents: [
     ],
