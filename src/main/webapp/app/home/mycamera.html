@@ -1,10 +1,12 @@
 <div>
+    <input type="file" accept="image/*" multiple capture>
     <div>
         <video id="video">Video stream not available.</video>
         <button (click)="takepicture()" id="startbutton">Take photo</button>
     </div>
     <canvas style="display: none" id="canvas">
     </canvas>
+    
     <div class="output">
         <img id="photo" alt="The screen capture will appear in this box.">
     </div>
