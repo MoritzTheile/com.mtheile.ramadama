@@ -23,12 +23,15 @@ export class MyCameraComponent implements AfterViewInit {
     }
 
     public ngAfterViewInit() {
+
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+
             this.video = <HTMLVideoElement>document.getElementById('video');
             this.canvas = document.getElementById('canvas');
             this.photo = document.getElementById('photo');
             this.startbutton = document.getElementById('startbutton');
-            navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+
+            navigator.mediaDevices.getUserMedia({ video: {facingMode: 'environment'}, audio: false })
                 .then((stream) => {
                     this.video.srcObject = stream;
                     this.video.play();
