@@ -56,6 +56,7 @@ export class StateService {
 
     private convert(state: State): State {
         const copy: State = Object.assign({}, state);
+
         return copy;
     }
 }
