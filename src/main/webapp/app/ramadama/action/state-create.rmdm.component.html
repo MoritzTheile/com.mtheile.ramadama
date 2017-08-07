@@ -3,5 +3,5 @@
     <input type="file" accept="image/*" capture (change)="setPictureDataAndSave($event, state)"/>
 </form>
 <div *ngIf="state.pictureData">
-    <img [src]="'data:image/jpg;base64,' + state.pictureData "/>
+    <img style="width: 128px" [src]="'data:image/jpg;base64,' + state.pictureData "/>
 </div>

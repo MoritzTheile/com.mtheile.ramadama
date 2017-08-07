@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { RamadamaSharedModule } from '../../shared';
 import { ActionCreateComponent } from './action-create.rmdm.component';
+import { ActionListComponent } from './action-list.rmdm.component';
 import { StateCreateComponent } from './state-create.rmdm.component';
 
 @NgModule({
@@ -13,10 +14,12 @@ import { StateCreateComponent } from './state-create.rmdm.component';
    ],
     exports: [
         ActionCreateComponent,
+        ActionListComponent,
     ],
     declarations: [
         ActionCreateComponent,
         StateCreateComponent,
+        ActionListComponent,
     ],
     entryComponents: [
     ],

@@ -65,6 +65,8 @@ export class StateCreateComponent {
 
     private onSaveSuccess(result: State, isCreated: boolean) {
 
+        this.state.id = result.id;
+
         this.alertService.success(
 
             isCreated ? 'ramadamaApp.state.created'

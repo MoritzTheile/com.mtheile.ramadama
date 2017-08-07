@@ -1,5 +1,5 @@
 <div>
-  <label>State before {{ stateBefore | json }}</label>
+  <label>State before id= {{ stateBefore.id }}</label>
   <jhi-state-create [state]="stateBefore">
 </div>
 <div>
@@ -7,3 +7,4 @@
   <jhi-state-create [state]="stateAfter">
   <button>Stelle aufger&auml;umt</button>
 </div>
+ <button type="submit" (click)="createAction()"  class="btn btn-primary" >Stelle aufger&auml;mt</button>
