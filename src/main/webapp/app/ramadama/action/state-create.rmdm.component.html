@@ -1,0 +1,5 @@
+<form [formGroup]="stateCreateFormGroup" novalidate>
+    <input class="form-control" formControlName="pictureDataContentType">
+</form>
+<p>Form value: {{ stateCreateFormGroup.value | json }}</p>
+<p>Form status: {{ stateCreateFormGroup.status | json }}</p>

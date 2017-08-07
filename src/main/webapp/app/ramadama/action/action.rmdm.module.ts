@@ -2,19 +2,21 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { RamadamaSharedModule } from '../shared';
-import { HOME_ROUTE, HomeComponent } from './';
-import { ActionRmdmModule } from '../ramadama/action/action.rmdm.module';
+import { RamadamaSharedModule } from '../../shared';
+import { ActionCreateComponent } from './action-create.rmdm.component';
+import { StateCreateComponent } from './state-create.rmdm.component';
 
 @NgModule({
     imports: [
         RamadamaSharedModule,
-        RouterModule.forRoot([ HOME_ROUTE ], { useHash: true }),
         ReactiveFormsModule,
-        ActionRmdmModule,
    ],
+    exports: [
+        ActionCreateComponent,
+    ],
     declarations: [
-        HomeComponent,
+        ActionCreateComponent,
+        StateCreateComponent,
     ],
     entryComponents: [
     ],
@@ -22,4 +24,4 @@ import { ActionRmdmModule } from '../ramadama/action/action.rmdm.module';
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class RamadamaHomeModule {}
+export class ActionRmdmModule {}

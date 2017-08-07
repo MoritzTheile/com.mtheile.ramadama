@@ -7,7 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'jhi-mycamera',
-    templateUrl: './mycamera.html',
+    templateUrl: './mycamera.component.html',
     styleUrls: [
         'home.css'
     ]
@@ -15,8 +15,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class MyCameraComponent {
 
-    state: State = new State();
-    isSaving = false;
+    beforeState: State = new State();
+
+    private isSaving = false;
 
     constructor(
         // public activeModal: NgbActiveModal,
@@ -26,7 +27,7 @@ export class MyCameraComponent {
         private eventManager: JhiEventManager
     ) { }
 
-    setPictureDataAndSave(event) {
+    setPictureDataAndSave(event, state: State) {
        if (event && event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
             if ( !/^image\//.test(file.type)) {
@@ -34,23 +35,23 @@ export class MyCameraComponent {
                 return;
             }
             this.dataUtils.toBase64(file, (base64Data) => {
-                this.state.pictureData = base64Data;
-                this.state.pictureDataContentType = file.type;
-                this.save();
+                state.pictureData = base64Data;
+                state.pictureDataContentType = file.type;
+                this.save(state);
             });
 
         }
-       
+
     }
 
-    save() {
+    save(state: State) {
         this.isSaving = true;
-        if (this.state.id !== undefined) {
+        if (this.beforeState.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.stateService.update(this.state), false);
+                this.stateService.update(this.beforeState), false);
         } else {
             this.subscribeToSaveResponse(
-                this.stateService.create(this.state), true);
+                this.stateService.create(this.beforeState), true);
         }
     }
 
