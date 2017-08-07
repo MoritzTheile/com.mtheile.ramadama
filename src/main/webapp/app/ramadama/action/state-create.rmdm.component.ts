@@ -15,8 +15,6 @@ export class StateCreateComponent {
 
     @Input() state: State;
 
-    stateCreateFormGroup: FormGroup;
-
     constructor(
 
         private dataUtils: JhiDataUtils,
@@ -25,25 +23,31 @@ export class StateCreateComponent {
         private fb: FormBuilder,
         private stateService: StateService) {
 
-        this.createForm();
-
-        this.stateCreateFormGroup.get('pictureDataContentType').valueChanges.forEach((value: string) => {
-
-            this.state.pictureDataContentType = value;
-            this.save(this.state);
-
-        });
-
     }
 
-    createForm() {
-        this.stateCreateFormGroup = this.fb.group({
-            pictureDataContentType: '',
+   setPictureDataAndSave(event, state: State) {
 
-        });
+        if (event && event.target.files && event.target.files[0]) {
+
+            const file = event.target.files[0];
+
+            if ( !/^image\//.test(file.type)) {
+                alert('not an image: ' + file.type);
+                return;
+            }
+
+            this.dataUtils.toBase64(file, (base64Data) => {
+                state.pictureData = base64Data;
+                state.pictureDataContentType = file.type;
+                this.save(state);
+            });
+
+        }
+
     }
 
     save(state: State) {
+
         if (state.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.stateService.update(state), false);
@@ -51,6 +55,7 @@ export class StateCreateComponent {
             this.subscribeToSaveResponse(
                 this.stateService.create(state), true);
         }
+
     }
 
     private subscribeToSaveResponse(result: Observable<State>, isCreated: boolean) {
@@ -59,13 +64,14 @@ export class StateCreateComponent {
     }
 
     private onSaveSuccess(result: State, isCreated: boolean) {
+
         this.alertService.success(
+
             isCreated ? 'ramadamaApp.state.created'
                 : 'ramadamaApp.state.updated',
             { param: result.id }, null);
 
         this.eventManager.broadcast({ name: 'stateListModification', content: 'OK' });
-        // this.activeModal.dismiss(result);
 
     }
 
