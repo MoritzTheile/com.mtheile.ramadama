@@ -6,12 +6,13 @@ import { RamadamaSharedModule } from '../../shared';
 import { ActionCreateComponent } from './action-create.rmdm.component';
 import { ActionListComponent } from './action-list.rmdm.component';
 import { StateCreateComponent } from './state-create.rmdm.component';
+import { StateViewComponent } from './state-view.rmdm.component';
 
 @NgModule({
     imports: [
         RamadamaSharedModule,
         ReactiveFormsModule,
-   ],
+    ],
     exports: [
         ActionCreateComponent,
         ActionListComponent,
@@ -19,6 +20,7 @@ import { StateCreateComponent } from './state-create.rmdm.component';
     declarations: [
         ActionCreateComponent,
         StateCreateComponent,
+        StateViewComponent,
         ActionListComponent,
     ],
     entryComponents: [
@@ -27,4 +29,4 @@ import { StateCreateComponent } from './state-create.rmdm.component';
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class ActionRmdmModule {}
+export class ActionRmdmModule { }

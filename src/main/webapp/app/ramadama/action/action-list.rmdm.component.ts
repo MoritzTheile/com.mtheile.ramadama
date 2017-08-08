@@ -13,7 +13,6 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 })
 export class ActionListComponent implements OnInit, OnDestroy {
 
-    currentAccount: any;
     actions: Action[];
     error: any;
     success: any;
@@ -38,7 +37,7 @@ export class ActionListComponent implements OnInit, OnDestroy {
         private paginationUtil: JhiPaginationUtil,
         private paginationConfig: PaginationConfig
     ) {
-        
+
         this.itemsPerPage = ITEMS_PER_PAGE;
 
         this.page = 0;
@@ -98,12 +97,19 @@ export class ActionListComponent implements OnInit, OnDestroy {
 
         this.loadAll();
     }
+
     ngOnInit() {
+
         this.loadAll();
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
+
+        // leads to: ERROR TypeError: _this.connectedPromise is not a function
+        // this.principal.identity()
+        //  .then((account) => {
+        //     this.currentAccount = account;
+        // });
+
         this.registerChangeInActions();
+
     }
 
     ngOnDestroy() {
