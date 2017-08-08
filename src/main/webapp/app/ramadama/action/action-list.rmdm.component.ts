@@ -9,8 +9,12 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 
 @Component({
     selector: 'jhi-action-list',
-    templateUrl: './action-list.rmdm.component.html'
+    templateUrl: './action-list.rmdm.component.html',
+    styleUrls: [
+        'action-view.css'
+    ]
 })
+
 export class ActionListComponent implements OnInit, OnDestroy {
 
     actions: Action[];
@@ -43,7 +47,7 @@ export class ActionListComponent implements OnInit, OnDestroy {
         this.page = 0;
         this.previousPage = 0;
         this.reverse = false;
-        this.predicate = '';
+        this.predicate = 'id';
         this.currentSearch = '';
 
         this.loadAll();

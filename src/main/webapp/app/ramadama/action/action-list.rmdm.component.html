@@ -1,16 +1,19 @@
 <div>
     <jhi-alert></jhi-alert>
     
-    <div class="table-responsive" *ngIf="actions"> 
-        <div *ngFor="let action of actions " style="margin-top:96px;" class="row rmdm-action">
-			<div class="col-md-6">
-                <jhi-state-view [stateId]=action.stateBeforeId>
->				<div class="timestamp-label">vor 5 Sekunden</div>
-			</div>
-			<div class="col-md-6">
-               <jhi-state-view [stateId]=action.stateAfterId>
->				<div class="thanks-label">Danke, Robert!</div>
-			</div>
+    <div  *ngIf="actions"> 
+        <div *ngFor="let action of actions" style="margin-top:96px;">
+            <div style="margin-top:96px;" class="row rmdm-action">
+                <div class="col-md-6">
+                    <jhi-state-view [stateId]="action.stateBeforeId" >
+                    <div class="timestamp-label">vor 5 Sekunden</div>
+                </div>
+                
+                <div class="col-md-6">
+                    <jhi-state-view [stateId]="action.stateAfterId" >
+                    <div class="thanks-label">Danke, Robert!</div>
+                </div>
+            </div>
 		</div>
     </div>
 </div>
