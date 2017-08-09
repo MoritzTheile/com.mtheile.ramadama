@@ -28,7 +28,6 @@ import java.util.*;
 /**
  * REST controller for managing the current user's account.
  */
-@SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping("/api")
 public class AccountResource {
@@ -154,7 +153,7 @@ public class AccountResource {
      * @param password the new password
      * @return the ResponseEntity with status 200 (OK), or status 400 (Bad Request) if the new password is not strong enough
      */
-	@PostMapping(path = "/account/change_password",
+    @PostMapping(path = "/account/change_password",
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
     public ResponseEntity changePassword(@RequestBody String password) {

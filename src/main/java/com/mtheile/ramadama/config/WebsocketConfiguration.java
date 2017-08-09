@@ -29,8 +29,7 @@ import java.util.Optional;
 @EnableWebSocketMessageBroker
 public class WebsocketConfiguration extends AbstractWebSocketMessageBrokerConfigurer {
 
-    @SuppressWarnings("unused")
-	private final Logger log = LoggerFactory.getLogger(WebsocketConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(WebsocketConfiguration.class);
 
     public static final String IP_ADDRESS = "IP_ADDRESS";
 

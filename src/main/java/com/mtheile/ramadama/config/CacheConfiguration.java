@@ -40,11 +40,6 @@ public class CacheConfiguration {
             cm.createCache(com.mtheile.ramadama.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.mtheile.ramadama.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.mtheile.ramadama.domain.User.class.getName() + ".authorities", jcacheConfiguration);
-            cm.createCache(com.mtheile.ramadama.domain.RamadamaUser.class.getName(), jcacheConfiguration);
-            cm.createCache(com.mtheile.ramadama.domain.RamadamaUser.class.getName() + ".users", jcacheConfiguration);
-            cm.createCache(com.mtheile.ramadama.domain.Action.class.getName(), jcacheConfiguration);
-            cm.createCache(com.mtheile.ramadama.domain.State.class.getName(), jcacheConfiguration);
-            cm.createCache(com.mtheile.ramadama.domain.RamadamaUser.class.getName() + ".actions", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

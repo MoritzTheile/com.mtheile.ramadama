@@ -16,7 +16,6 @@
     "databaseType": "sql",
     "devDatabaseType": "h2Memory",
     "prodDatabaseType": "postgresql",
-    "searchEngine": "elasticsearch",
     "messageBroker": false,
     "serviceDiscoveryType": false,
     "buildTool": "maven",
@@ -32,6 +31,7 @@
     "languages": [
       "de",
       "en"
-    ]
+    ],
+    "searchEngine": false
   }
 }
