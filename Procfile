@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Xmx400m -Dserver.port=$PORT -jar target/*.war
+web: java -Xmx321m -Dserver.port=$PORT -jar target/*.war
