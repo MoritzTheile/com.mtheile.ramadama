@@ -69,7 +69,7 @@ public class RamadamaApp {
     	{
     		RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
     		for (String argument: runtimeMxBean.getInputArguments()){
-    			log.info("JVM-Arg: " + argument);
+    			log.info("JVM-Arg from RuntimeMXBean: " + argument);
     		}
     	}
         SpringApplication app = new SpringApplication(RamadamaApp.class);
