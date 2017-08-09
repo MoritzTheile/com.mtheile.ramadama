@@ -1,1 +1,1 @@
-web: java -Xmx321m -Dserver.port=$PORT -jar target/*.war
+web: java $JAVA_OPTS -Xmx332m -Dserver.port=$PORT -jar target/ramadama-0.0.1-SNAPSHOT.war
