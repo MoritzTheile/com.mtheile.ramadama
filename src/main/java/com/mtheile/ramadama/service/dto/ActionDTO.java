@@ -2,6 +2,8 @@ package com.mtheile.ramadama.service.dto;
 
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -9,12 +11,7 @@ import java.util.Objects;
  */
 public class ActionDTO implements Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 3980758733399963519L;
-
-	private Long id;
+    private Long id;
 
     private Long ramadamaUserId;
 

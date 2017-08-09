@@ -14,12 +14,11 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 })
 export class StateComponent implements OnInit, OnDestroy {
 
-    currentAccount: any;
+currentAccount: any;
     states: State[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
     routeData: any;
     links: any;
     totalItems: any;
@@ -49,20 +48,9 @@ export class StateComponent implements OnInit, OnDestroy {
             this.reverse = data['pagingParams'].ascending;
             this.predicate = data['pagingParams'].predicate;
         });
-        this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.stateService.search({
-                query: this.currentSearch,
-                size: this.itemsPerPage,
-                sort: this.sort()}).subscribe(
-                    (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
-            return;
-        }
         this.stateService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
@@ -82,7 +70,6 @@ export class StateComponent implements OnInit, OnDestroy {
             {
                 page: this.page,
                 size: this.itemsPerPage,
-                search: this.currentSearch,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
             }
         });
@@ -91,21 +78,7 @@ export class StateComponent implements OnInit, OnDestroy {
 
     clear() {
         this.page = 0;
-        this.currentSearch = '';
         this.router.navigate(['/state', {
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
-    }
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.page = 0;
-        this.currentSearch = query;
-        this.router.navigate(['/state', {
-            search: this.currentSearch,
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
         }]);

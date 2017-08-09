@@ -16,48 +16,22 @@ export class RamadamaUserComponent implements OnInit, OnDestroy {
 ramadamaUsers: RamadamaUser[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private ramadamaUserService: RamadamaUserService,
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
-        this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.ramadamaUserService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: ResponseWrapper) => this.ramadamaUsers = res.json,
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
-            return;
-       }
         this.ramadamaUserService.query().subscribe(
             (res: ResponseWrapper) => {
                 this.ramadamaUsers = res.json;
-                this.currentSearch = '';
             },
             (res: ResponseWrapper) => this.onError(res.json)
         );
-    }
-
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
-    clear() {
-        this.currentSearch = '';
-        this.loadAll();
     }
     ngOnInit() {
         this.loadAll();

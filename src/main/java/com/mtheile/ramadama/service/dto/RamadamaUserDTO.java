@@ -2,6 +2,8 @@ package com.mtheile.ramadama.service.dto;
 
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -9,9 +11,7 @@ import java.util.Objects;
  */
 public class RamadamaUserDTO implements Serializable {
 
- 	private static final long serialVersionUID = -783471923847750944L;
- 	
-	private Long id;
+    private Long id;
 
     public Long getId() {
         return id;

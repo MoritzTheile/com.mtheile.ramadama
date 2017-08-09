@@ -4,8 +4,7 @@
             "home": {
                 "title": "Actions",
                 "createLabel": "Action erstellen",
-                "createOrEditLabel": "Action erstellen oder bearbeiten",
-                "search": "Suche nach Action"
+                "createOrEditLabel": "Action erstellen oder bearbeiten"
             },
             "created": "Action erstellt mit ID {{ param }}",
             "updated": "Action aktualisiert mit ID {{ param }}",

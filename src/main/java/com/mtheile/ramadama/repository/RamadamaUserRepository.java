@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.*;
 /**
  * Spring Data JPA repository for the RamadamaUser entity.
  */
+@SuppressWarnings("unused")
 @Repository
 public interface RamadamaUserRepository extends JpaRepository<RamadamaUser,Long> {
     
