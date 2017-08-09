@@ -44,8 +44,8 @@ import {
         ErrorComponent,
         PageRibbonComponent,
         ActiveMenuDirective,
-        FooterComponent
-    ],
+        FooterComponent,
+   ],
     providers: [
         ProfileService,
         customHttpProvider(),

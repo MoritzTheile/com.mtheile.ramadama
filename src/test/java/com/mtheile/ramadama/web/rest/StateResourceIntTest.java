@@ -4,6 +4,7 @@ import com.mtheile.ramadama.RamadamaApp;
 
 import com.mtheile.ramadama.domain.State;
 import com.mtheile.ramadama.repository.StateRepository;
+import com.mtheile.ramadama.repository.search.StateSearchRepository;
 import com.mtheile.ramadama.service.dto.StateDTO;
 import com.mtheile.ramadama.service.mapper.StateMapper;
 import com.mtheile.ramadama.web.rest.errors.ExceptionTranslator;
@@ -52,6 +53,9 @@ public class StateResourceIntTest {
     private StateMapper stateMapper;
 
     @Autowired
+    private StateSearchRepository stateSearchRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -70,7 +74,7 @@ public class StateResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        StateResource stateResource = new StateResource(stateRepository, stateMapper);
+        StateResource stateResource = new StateResource(stateRepository, stateMapper, stateSearchRepository);
         this.restStateMockMvc = MockMvcBuilders.standaloneSetup(stateResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -92,6 +96,7 @@ public class StateResourceIntTest {
 
     @Before
     public void initTest() {
+        stateSearchRepository.deleteAll();
         state = createEntity(em);
     }
 
@@ -113,6 +118,10 @@ public class StateResourceIntTest {
         State testState = stateList.get(stateList.size() - 1);
         assertThat(testState.getPictureData()).isEqualTo(DEFAULT_PICTURE_DATA);
         assertThat(testState.getPictureDataContentType()).isEqualTo(DEFAULT_PICTURE_DATA_CONTENT_TYPE);
+
+        // Validate the State in Elasticsearch
+        State stateEs = stateSearchRepository.findOne(testState.getId());
+        assertThat(stateEs).isEqualToComparingFieldByField(testState);
     }
 
     @Test
@@ -178,6 +187,7 @@ public class StateResourceIntTest {
     public void updateState() throws Exception {
         // Initialize the database
         stateRepository.saveAndFlush(state);
+        stateSearchRepository.save(state);
         int databaseSizeBeforeUpdate = stateRepository.findAll().size();
 
         // Update the state
@@ -198,6 +208,10 @@ public class StateResourceIntTest {
         State testState = stateList.get(stateList.size() - 1);
         assertThat(testState.getPictureData()).isEqualTo(UPDATED_PICTURE_DATA);
         assertThat(testState.getPictureDataContentType()).isEqualTo(UPDATED_PICTURE_DATA_CONTENT_TYPE);
+
+        // Validate the State in Elasticsearch
+        State stateEs = stateSearchRepository.findOne(testState.getId());
+        assertThat(stateEs).isEqualToComparingFieldByField(testState);
     }
 
     @Test
@@ -224,6 +238,7 @@ public class StateResourceIntTest {
     public void deleteState() throws Exception {
         // Initialize the database
         stateRepository.saveAndFlush(state);
+        stateSearchRepository.save(state);
         int databaseSizeBeforeDelete = stateRepository.findAll().size();
 
         // Get the state
@@ -231,9 +246,29 @@ public class StateResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
+        // Validate Elasticsearch is empty
+        boolean stateExistsInEs = stateSearchRepository.exists(state.getId());
+        assertThat(stateExistsInEs).isFalse();
+
         // Validate the database is empty
         List<State> stateList = stateRepository.findAll();
         assertThat(stateList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchState() throws Exception {
+        // Initialize the database
+        stateRepository.saveAndFlush(state);
+        stateSearchRepository.save(state);
+
+        // Search the state
+        restStateMockMvc.perform(get("/api/_search/states?query=id:" + state.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(state.getId().intValue())))
+            .andExpect(jsonPath("$.[*].pictureDataContentType").value(hasItem(DEFAULT_PICTURE_DATA_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].pictureData").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE_DATA))));
     }
 
     @Test

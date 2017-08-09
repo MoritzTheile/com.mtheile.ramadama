@@ -4,7 +4,8 @@
             "home": {
                 "title": "Ramadama Users",
                 "createLabel": "Ramadama User erstellen",
-                "createOrEditLabel": "Ramadama User erstellen oder bearbeiten"
+                "createOrEditLabel": "Ramadama User erstellen oder bearbeiten",
+                "search": "Suche nach Ramadama User"
             },
             "created": "Ramadama User erstellt mit ID {{ param }}",
             "updated": "Ramadama User aktualisiert mit ID {{ param }}",

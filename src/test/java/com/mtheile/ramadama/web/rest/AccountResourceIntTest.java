@@ -1,16 +1,21 @@
 package com.mtheile.ramadama.web.rest;
 
-import com.mtheile.ramadama.RamadamaApp;
-import com.mtheile.ramadama.domain.Authority;
-import com.mtheile.ramadama.domain.User;
-import com.mtheile.ramadama.repository.AuthorityRepository;
-import com.mtheile.ramadama.repository.UserRepository;
-import com.mtheile.ramadama.security.AuthoritiesConstants;
-import com.mtheile.ramadama.service.MailService;
-import com.mtheile.ramadama.service.UserService;
-import com.mtheile.ramadama.service.dto.UserDTO;
-import com.mtheile.ramadama.web.rest.vm.KeyAndPasswordVM;
-import com.mtheile.ramadama.web.rest.vm.ManagedUserVM;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.Instant;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,19 +33,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.*;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.mtheile.ramadama.RamadamaApp;
+import com.mtheile.ramadama.domain.Authority;
+import com.mtheile.ramadama.domain.User;
+import com.mtheile.ramadama.repository.AuthorityRepository;
+import com.mtheile.ramadama.repository.UserRepository;
+import com.mtheile.ramadama.security.AuthoritiesConstants;
+import com.mtheile.ramadama.service.MailService;
+import com.mtheile.ramadama.service.UserService;
+import com.mtheile.ramadama.service.dto.UserDTO;
+import com.mtheile.ramadama.web.rest.vm.KeyAndPasswordVM;
+import com.mtheile.ramadama.web.rest.vm.ManagedUserVM;
 
 /**
  * Test class for the AccountResource REST controller.
@@ -63,7 +66,8 @@ public class AccountResourceIntTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
+    @SuppressWarnings({"rawtypes" })
+	@Autowired
     private HttpMessageConverter[] httpMessageConverters;
 
     @Mock

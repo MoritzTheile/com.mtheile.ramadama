@@ -4,6 +4,7 @@ import com.mtheile.ramadama.RamadamaApp;
 
 import com.mtheile.ramadama.domain.RamadamaUser;
 import com.mtheile.ramadama.repository.RamadamaUserRepository;
+import com.mtheile.ramadama.repository.search.RamadamaUserSearchRepository;
 import com.mtheile.ramadama.service.dto.RamadamaUserDTO;
 import com.mtheile.ramadama.service.mapper.RamadamaUserMapper;
 import com.mtheile.ramadama.web.rest.errors.ExceptionTranslator;
@@ -46,6 +47,9 @@ public class RamadamaUserResourceIntTest {
     private RamadamaUserMapper ramadamaUserMapper;
 
     @Autowired
+    private RamadamaUserSearchRepository ramadamaUserSearchRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -64,7 +68,7 @@ public class RamadamaUserResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        RamadamaUserResource ramadamaUserResource = new RamadamaUserResource(ramadamaUserRepository, ramadamaUserMapper);
+        RamadamaUserResource ramadamaUserResource = new RamadamaUserResource(ramadamaUserRepository, ramadamaUserMapper, ramadamaUserSearchRepository);
         this.restRamadamaUserMockMvc = MockMvcBuilders.standaloneSetup(ramadamaUserResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -84,6 +88,7 @@ public class RamadamaUserResourceIntTest {
 
     @Before
     public void initTest() {
+        ramadamaUserSearchRepository.deleteAll();
         ramadamaUser = createEntity(em);
     }
 
@@ -103,6 +108,10 @@ public class RamadamaUserResourceIntTest {
         List<RamadamaUser> ramadamaUserList = ramadamaUserRepository.findAll();
         assertThat(ramadamaUserList).hasSize(databaseSizeBeforeCreate + 1);
         RamadamaUser testRamadamaUser = ramadamaUserList.get(ramadamaUserList.size() - 1);
+
+        // Validate the RamadamaUser in Elasticsearch
+        RamadamaUser ramadamaUserEs = ramadamaUserSearchRepository.findOne(testRamadamaUser.getId());
+        assertThat(ramadamaUserEs).isEqualToComparingFieldByField(testRamadamaUser);
     }
 
     @Test
@@ -164,6 +173,7 @@ public class RamadamaUserResourceIntTest {
     public void updateRamadamaUser() throws Exception {
         // Initialize the database
         ramadamaUserRepository.saveAndFlush(ramadamaUser);
+        ramadamaUserSearchRepository.save(ramadamaUser);
         int databaseSizeBeforeUpdate = ramadamaUserRepository.findAll().size();
 
         // Update the ramadamaUser
@@ -179,6 +189,10 @@ public class RamadamaUserResourceIntTest {
         List<RamadamaUser> ramadamaUserList = ramadamaUserRepository.findAll();
         assertThat(ramadamaUserList).hasSize(databaseSizeBeforeUpdate);
         RamadamaUser testRamadamaUser = ramadamaUserList.get(ramadamaUserList.size() - 1);
+
+        // Validate the RamadamaUser in Elasticsearch
+        RamadamaUser ramadamaUserEs = ramadamaUserSearchRepository.findOne(testRamadamaUser.getId());
+        assertThat(ramadamaUserEs).isEqualToComparingFieldByField(testRamadamaUser);
     }
 
     @Test
@@ -205,6 +219,7 @@ public class RamadamaUserResourceIntTest {
     public void deleteRamadamaUser() throws Exception {
         // Initialize the database
         ramadamaUserRepository.saveAndFlush(ramadamaUser);
+        ramadamaUserSearchRepository.save(ramadamaUser);
         int databaseSizeBeforeDelete = ramadamaUserRepository.findAll().size();
 
         // Get the ramadamaUser
@@ -212,9 +227,27 @@ public class RamadamaUserResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
+        // Validate Elasticsearch is empty
+        boolean ramadamaUserExistsInEs = ramadamaUserSearchRepository.exists(ramadamaUser.getId());
+        assertThat(ramadamaUserExistsInEs).isFalse();
+
         // Validate the database is empty
         List<RamadamaUser> ramadamaUserList = ramadamaUserRepository.findAll();
         assertThat(ramadamaUserList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchRamadamaUser() throws Exception {
+        // Initialize the database
+        ramadamaUserRepository.saveAndFlush(ramadamaUser);
+        ramadamaUserSearchRepository.save(ramadamaUser);
+
+        // Search the ramadamaUser
+        restRamadamaUserMockMvc.perform(get("/api/_search/ramadama-users?query=id:" + ramadamaUser.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(ramadamaUser.getId().intValue())));
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.mtheile.ramadama.RamadamaApp;
 
 import com.mtheile.ramadama.domain.Action;
 import com.mtheile.ramadama.repository.ActionRepository;
+import com.mtheile.ramadama.repository.search.ActionSearchRepository;
 import com.mtheile.ramadama.service.dto.ActionDTO;
 import com.mtheile.ramadama.service.mapper.ActionMapper;
 import com.mtheile.ramadama.web.rest.errors.ExceptionTranslator;
@@ -46,6 +47,9 @@ public class ActionResourceIntTest {
     private ActionMapper actionMapper;
 
     @Autowired
+    private ActionSearchRepository actionSearchRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -64,7 +68,7 @@ public class ActionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ActionResource actionResource = new ActionResource(actionRepository, actionMapper);
+        ActionResource actionResource = new ActionResource(actionRepository, actionMapper, actionSearchRepository);
         this.restActionMockMvc = MockMvcBuilders.standaloneSetup(actionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -84,6 +88,7 @@ public class ActionResourceIntTest {
 
     @Before
     public void initTest() {
+        actionSearchRepository.deleteAll();
         action = createEntity(em);
     }
 
@@ -103,6 +108,10 @@ public class ActionResourceIntTest {
         List<Action> actionList = actionRepository.findAll();
         assertThat(actionList).hasSize(databaseSizeBeforeCreate + 1);
         Action testAction = actionList.get(actionList.size() - 1);
+
+        // Validate the Action in Elasticsearch
+        Action actionEs = actionSearchRepository.findOne(testAction.getId());
+        assertThat(actionEs).isEqualToComparingFieldByField(testAction);
     }
 
     @Test
@@ -164,6 +173,7 @@ public class ActionResourceIntTest {
     public void updateAction() throws Exception {
         // Initialize the database
         actionRepository.saveAndFlush(action);
+        actionSearchRepository.save(action);
         int databaseSizeBeforeUpdate = actionRepository.findAll().size();
 
         // Update the action
@@ -179,6 +189,10 @@ public class ActionResourceIntTest {
         List<Action> actionList = actionRepository.findAll();
         assertThat(actionList).hasSize(databaseSizeBeforeUpdate);
         Action testAction = actionList.get(actionList.size() - 1);
+
+        // Validate the Action in Elasticsearch
+        Action actionEs = actionSearchRepository.findOne(testAction.getId());
+        assertThat(actionEs).isEqualToComparingFieldByField(testAction);
     }
 
     @Test
@@ -205,6 +219,7 @@ public class ActionResourceIntTest {
     public void deleteAction() throws Exception {
         // Initialize the database
         actionRepository.saveAndFlush(action);
+        actionSearchRepository.save(action);
         int databaseSizeBeforeDelete = actionRepository.findAll().size();
 
         // Get the action
@@ -212,9 +227,27 @@ public class ActionResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
+        // Validate Elasticsearch is empty
+        boolean actionExistsInEs = actionSearchRepository.exists(action.getId());
+        assertThat(actionExistsInEs).isFalse();
+
         // Validate the database is empty
         List<Action> actionList = actionRepository.findAll();
         assertThat(actionList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchAction() throws Exception {
+        // Initialize the database
+        actionRepository.saveAndFlush(action);
+        actionSearchRepository.save(action);
+
+        // Search the action
+        restActionMockMvc.perform(get("/api/_search/actions?query=id:" + action.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(action.getId().intValue())));
     }
 
     @Test

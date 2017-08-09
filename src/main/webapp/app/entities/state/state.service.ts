@@ -9,6 +9,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class StateService {
 
     private resourceUrl = 'api/states';
+    private resourceSearchUrl = 'api/_search/states';
 
     constructor(private http: Http) { }
 
@@ -42,6 +43,12 @@ export class StateService {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
+    search(req?: any): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        return this.http.get(this.resourceSearchUrl, options)
+            .map((res: any) => this.convertResponse(res));
+    }
+
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
         return new ResponseWrapper(res.headers, jsonResponse, res.status);
@@ -49,6 +56,7 @@ export class StateService {
 
     private convert(state: State): State {
         const copy: State = Object.assign({}, state);
+
         return copy;
     }
 }

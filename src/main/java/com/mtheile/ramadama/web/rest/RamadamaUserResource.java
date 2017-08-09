@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mtheile.ramadama.domain.RamadamaUser;
 
 import com.mtheile.ramadama.repository.RamadamaUserRepository;
+import com.mtheile.ramadama.repository.search.RamadamaUserSearchRepository;
 import com.mtheile.ramadama.web.rest.util.HeaderUtil;
 import com.mtheile.ramadama.service.dto.RamadamaUserDTO;
 import com.mtheile.ramadama.service.mapper.RamadamaUserMapper;
@@ -18,6 +19,10 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing RamadamaUser.
@@ -34,9 +39,12 @@ public class RamadamaUserResource {
 
     private final RamadamaUserMapper ramadamaUserMapper;
 
-    public RamadamaUserResource(RamadamaUserRepository ramadamaUserRepository, RamadamaUserMapper ramadamaUserMapper) {
+    private final RamadamaUserSearchRepository ramadamaUserSearchRepository;
+
+    public RamadamaUserResource(RamadamaUserRepository ramadamaUserRepository, RamadamaUserMapper ramadamaUserMapper, RamadamaUserSearchRepository ramadamaUserSearchRepository) {
         this.ramadamaUserRepository = ramadamaUserRepository;
         this.ramadamaUserMapper = ramadamaUserMapper;
+        this.ramadamaUserSearchRepository = ramadamaUserSearchRepository;
     }
 
     /**
@@ -56,6 +64,7 @@ public class RamadamaUserResource {
         RamadamaUser ramadamaUser = ramadamaUserMapper.toEntity(ramadamaUserDTO);
         ramadamaUser = ramadamaUserRepository.save(ramadamaUser);
         RamadamaUserDTO result = ramadamaUserMapper.toDto(ramadamaUser);
+        ramadamaUserSearchRepository.save(ramadamaUser);
         return ResponseEntity.created(new URI("/api/ramadama-users/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,6 +89,7 @@ public class RamadamaUserResource {
         RamadamaUser ramadamaUser = ramadamaUserMapper.toEntity(ramadamaUserDTO);
         ramadamaUser = ramadamaUserRepository.save(ramadamaUser);
         RamadamaUserDTO result = ramadamaUserMapper.toDto(ramadamaUser);
+        ramadamaUserSearchRepository.save(ramadamaUser);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, ramadamaUserDTO.getId().toString()))
             .body(result);
@@ -124,6 +134,25 @@ public class RamadamaUserResource {
     public ResponseEntity<Void> deleteRamadamaUser(@PathVariable Long id) {
         log.debug("REST request to delete RamadamaUser : {}", id);
         ramadamaUserRepository.delete(id);
+        ramadamaUserSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * SEARCH  /_search/ramadama-users?query=:query : search for the ramadamaUser corresponding
+     * to the query.
+     *
+     * @param query the query of the ramadamaUser search
+     * @return the result of the search
+     */
+    @GetMapping("/_search/ramadama-users")
+    @Timed
+    public List<RamadamaUserDTO> searchRamadamaUsers(@RequestParam String query) {
+        log.debug("REST request to search RamadamaUsers for query {}", query);
+        return StreamSupport
+            .stream(ramadamaUserSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(ramadamaUserMapper::toDto)
+            .collect(Collectors.toList());
+    }
+
 }

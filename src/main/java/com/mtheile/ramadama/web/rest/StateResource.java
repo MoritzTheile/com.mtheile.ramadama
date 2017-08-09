@@ -1,15 +1,12 @@
 package com.mtheile.ramadama.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.mtheile.ramadama.domain.State;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-import com.mtheile.ramadama.repository.StateRepository;
-import com.mtheile.ramadama.web.rest.util.HeaderUtil;
-import com.mtheile.ramadama.web.rest.util.PaginationUtil;
-import com.mtheile.ramadama.service.dto.StateDTO;
-import com.mtheile.ramadama.service.mapper.StateMapper;
-import io.swagger.annotations.ApiParam;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,13 +14,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
+import com.mtheile.ramadama.domain.State;
+import com.mtheile.ramadama.repository.StateRepository;
+import com.mtheile.ramadama.repository.search.StateSearchRepository;
+import com.mtheile.ramadama.service.dto.StateDTO;
+import com.mtheile.ramadama.service.mapper.StateMapper;
+import com.mtheile.ramadama.web.rest.util.HeaderUtil;
+import com.mtheile.ramadama.web.rest.util.PaginationUtil;
 
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 
 /**
  * REST controller for managing State.
@@ -40,9 +51,12 @@ public class StateResource {
 
     private final StateMapper stateMapper;
 
-    public StateResource(StateRepository stateRepository, StateMapper stateMapper) {
+    private final StateSearchRepository stateSearchRepository;
+
+    public StateResource(StateRepository stateRepository, StateMapper stateMapper, StateSearchRepository stateSearchRepository) {
         this.stateRepository = stateRepository;
         this.stateMapper = stateMapper;
+        this.stateSearchRepository = stateSearchRepository;
     }
 
     /**
@@ -62,6 +76,7 @@ public class StateResource {
         State state = stateMapper.toEntity(stateDTO);
         state = stateRepository.save(state);
         StateDTO result = stateMapper.toDto(state);
+        stateSearchRepository.save(state);
         return ResponseEntity.created(new URI("/api/states/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -86,6 +101,7 @@ public class StateResource {
         State state = stateMapper.toEntity(stateDTO);
         state = stateRepository.save(state);
         StateDTO result = stateMapper.toDto(state);
+        stateSearchRepository.save(state);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, stateDTO.getId().toString()))
             .body(result);
@@ -132,6 +148,25 @@ public class StateResource {
     public ResponseEntity<Void> deleteState(@PathVariable Long id) {
         log.debug("REST request to delete State : {}", id);
         stateRepository.delete(id);
+        stateSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * SEARCH  /_search/states?query=:query : search for the state corresponding
+     * to the query.
+     *
+     * @param query the query of the state search
+     * @param pageable the pagination information
+     * @return the result of the search
+     */
+    @GetMapping("/_search/states")
+    @Timed
+    public ResponseEntity<List<StateDTO>> searchStates(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of States for query {}", query);
+        Page<State> page = stateSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/states");
+        return new ResponseEntity<>(stateMapper.toDto(page.getContent()), headers, HttpStatus.OK);
+    }
+
 }

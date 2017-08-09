@@ -4,7 +4,8 @@
             "home": {
                 "title": "States",
                 "createLabel": "State erstellen",
-                "createOrEditLabel": "State erstellen oder bearbeiten"
+                "createOrEditLabel": "State erstellen oder bearbeiten",
+                "search": "Suche nach State"
             },
             "created": "State erstellt mit ID {{ param }}",
             "updated": "State aktualisiert mit ID {{ param }}",
