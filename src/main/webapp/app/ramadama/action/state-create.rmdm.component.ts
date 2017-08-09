@@ -39,31 +39,31 @@ export class StateCreateComponent {
             this.dataUtils.toBase64(file, (base64Data) => {
                 state.pictureData = base64Data;
                 state.pictureDataContentType = file.type;
-                this.save(state);
+                this.saveState(state);
             });
 
         }
 
     }
 
-    save(state: State) {
+    saveState(state: State) {
 
         if (state.id !== undefined) {
-            this.subscribeToSaveResponse(
+            this.subscribeToSaveStateResponse(
                 this.stateService.update(state), false);
         } else {
-            this.subscribeToSaveResponse(
+            this.subscribeToSaveStateResponse(
                 this.stateService.create(state), true);
         }
 
     }
 
-    private subscribeToSaveResponse(result: Observable<State>, isCreated: boolean) {
+    private subscribeToSaveStateResponse(result: Observable<State>, isCreated: boolean) {
         result.subscribe((res: State) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveStateSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: State, isCreated: boolean) {
+    private onSaveStateSuccess(result: State, isCreated: boolean) {
 
         this.state.id = result.id;
 

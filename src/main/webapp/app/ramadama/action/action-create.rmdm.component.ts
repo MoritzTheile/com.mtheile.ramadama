@@ -7,7 +7,7 @@ import { Action } from '../../entities/action/action.model';
 import { ActionService } from '../../entities/action/action.service';
 
 @Component({
-    selector: 'jhi-action-create',
+    selector: 'jhi-action-create-asdf',
     templateUrl: './action-create.rmdm.component.html'
 })
 

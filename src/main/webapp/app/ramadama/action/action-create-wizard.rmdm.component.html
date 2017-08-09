@@ -1,0 +1,7 @@
+<label *ngIf="!stateBefore.pictureData" for="input-Before" class="btn btn-primary">Bild von vermüllter Stelle machen
+    <input style="display: none;" id="input-Before" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateBefore)" />
+</label>
+<label *ngIf="!stateAfter.pictureData" for="input-Before" class="btn btn-primary">Bild von aufgeräumter Stelle machen
+    <input style="display: none;" id="input-Before" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateAfter)" />
+</label>
+
