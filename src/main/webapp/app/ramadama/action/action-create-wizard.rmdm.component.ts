@@ -82,7 +82,9 @@ export class ActionCreateWizardComponent {
         if (this.stateBefore.id && this.stateAfter.id) {
             this.createAction();
             this.stateBefore = new State();
-            this.stateAfter = new State();        }
+            this.stateAfter = new State();
+            this.clear();
+                }
     }
 
     createAction() {
@@ -110,7 +112,6 @@ export class ActionCreateWizardComponent {
                 : 'ramadamaApp.action.updated',
             { param: result.id }, null);
 
-        this.eventManager.broadcast({ name: 'actionListModification', content: 'OK' });
         this.isSaving = false;
     }
 

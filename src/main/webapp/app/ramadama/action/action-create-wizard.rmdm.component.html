@@ -1,19 +1,34 @@
 <div class="modal-header">
-    <h4 class="modal-title" >Stelle aufräumen</h4>
+    <h4  style="width:100%" class="modal-title text-center" >Stelle aufräumen</h4>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
  
 </div>
 <div class="modal-body">
     <jhi-alert-error></jhi-alert-error>
+    <div class="text-center" style="width:100%">
+    <br>
+    <br>
+    <br>
     <p>Fotografiere die Stelle vor und nach dem Aufräumen</p>
-    <label *ngIf="!stateBefore.pictureData" for="input-Before" class="btn btn-primary">Bild von vermüllter Stelle machen
+    <br>
+    <br>
+    <br>
+    </div>
+</div>
+<div class="modal-footer ">
+    <div class="text-center" style="width:100%">
+     <label *ngIf="!stateBefore.pictureData" for="input-Before" class="btn btn-primary">Bild von vermüllter Stelle machen
         <input style="display: none;" id="input-Before" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateBefore)" />
     </label>
-    <label *ngIf="!stateAfter.pictureData" for="input-Before" class="btn btn-primary">Bild von aufgeräumter Stelle machen
-        <input style="display: none;" id="input-Before" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateAfter)" />
+     <label *ngIf="stateBefore.pictureData" for="input-Before" class="btn btn-primary  disabled">Bild von vermüllter Stelle machen
+        <input disabled style="display: none;" id="input-Before" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateBefore)" />
     </label>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-primary">Stelle aufgeräumt</button>
+    <label *ngIf="!stateAfter.pictureData && stateBefore.pictureData" for="input-After" class="btn btn-primary">Bild von aufgeräumter Stelle machen
+        <input style="display: none;" id="input-After" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateAfter)" />
+    </label>
+    <label *ngIf="stateAfter.pictureData || !stateBefore.pictureData" for="input-After" class="btn btn-primary disabled">Bild von aufgeräumter Stelle machen
+        <input disabled style="display: none;" id="input-After" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateAfter)" />
+    </label>
+    </div>
 </div>
