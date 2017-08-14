@@ -13,6 +13,7 @@ export class ActionCreatePopupService {
     ) {}
 
     open(component: Component): NgbModalRef {
+
         if (this.isOpen) {
             return;
         }
