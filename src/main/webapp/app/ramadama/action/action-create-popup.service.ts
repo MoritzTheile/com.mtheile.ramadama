@@ -14,19 +14,14 @@ export class ActionCreatePopupService {
 
     ) {}
 
-    open(component: Component, id?: number | any): NgbModalRef {
+    open(component: Component): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
 
-        if (id) {
-            this.actionService.find(id).subscribe((action) => {
-                this.actionModalRef(component, action);
-            });
-        } else {
-            return this.actionModalRef(component, new Action());
-        }
+        return this.actionModalRef(component, new Action());
+
     }
 
     actionModalRef(component: Component, action: Action): NgbModalRef {

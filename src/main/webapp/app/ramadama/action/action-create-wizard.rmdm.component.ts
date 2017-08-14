@@ -1,10 +1,14 @@
-import { Component, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, OnInit, OnDestroy  } from '@angular/core';
+import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
+
 import { State } from '../../entities/state/state.model';
 import { StateService } from '../../entities/state/state.service';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 import { Observable } from 'rxjs/Rx';
 import { Action } from '../../entities/action/action.model';
 import { ActionService } from '../../entities/action/action.service';
+import { ActionCreatePopupService } from './action-create-popup.service';
 
 @Component({
     selector: 'jhi-action-create-wizard',
@@ -24,7 +28,12 @@ export class ActionCreateWizardComponent {
         private eventManager: JhiEventManager,
         private stateService: StateService,
         private actionService: ActionService,
+        public activeModal: NgbActiveModal,
     ) { }
+
+    clear() {
+        this.activeModal.dismiss('cancel');
+    }
 
     setPictureDataAndSave(event, state: State) {
         console.log('setPictureDataAndSave');
@@ -119,4 +128,30 @@ export class ActionCreateWizardComponent {
         this.alertService.error(error.message, null, null);
     }
 
+}
+@Component({
+    selector: 'jhi-action-create-popup',
+    template: '<div>codemarker=et489to</div>'
+})
+export class ActionCreateWizardPopupComponent implements OnInit, OnDestroy {
+
+    modalRef: NgbModalRef;
+    routeSub: any;
+
+    constructor(
+        private route: ActivatedRoute,
+        private actionPopupService: ActionCreatePopupService
+    ) {}
+
+    ngOnInit() {
+        alert('hello popup ');
+        this.routeSub = this.route.params.subscribe((params) => {
+            this.modalRef = this.actionPopupService
+                .open(ActionCreateWizardComponent);
+        });
+    }
+
+    ngOnDestroy() {
+        // this.routeSub.unsubscribe();
+    }
 }

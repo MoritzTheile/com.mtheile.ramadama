@@ -76,7 +76,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/account/reset_password/init")
             .antMatchers("/api/account/reset_password/finish")
             //this line gives full access to all api services
-            .antMatchers("/api/**")
+            //.antMatchers("/api/**")
             .antMatchers("/test/**")
             .antMatchers("/h2-console/**");
     }

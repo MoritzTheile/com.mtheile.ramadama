@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { RamadamaSharedModule } from '../../shared';
 import { ActionCreateWizardComponent } from './action-create-wizard.rmdm.component';
+import { ActionCreateWizardPopupComponent } from './action-create-wizard.rmdm.component';
 import { ActionListComponent } from './action-list.rmdm.component';
 import { StateViewComponent } from './state-view.rmdm.component';
 import { ActionCreatePopupService } from './action-create-popup.service';
@@ -17,14 +18,17 @@ import { actionPopupRoute } from './action.rmdm.route';
     ],
     exports: [
         ActionCreateWizardComponent,
+        ActionCreateWizardPopupComponent,
         ActionListComponent,
     ],
     declarations: [
         ActionCreateWizardComponent,
+        ActionCreateWizardPopupComponent,
         StateViewComponent,
         ActionListComponent,
     ],
     entryComponents: [
+        ActionCreateWizardComponent,
     ],
     providers: [
         ActionCreatePopupService
