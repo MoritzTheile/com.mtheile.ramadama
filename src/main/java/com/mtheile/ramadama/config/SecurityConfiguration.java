@@ -27,83 +27,85 @@ import javax.annotation.PostConstruct;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    private final UserDetailsService userDetailsService;
+	private final UserDetailsService userDetailsService;
 
-    public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService userDetailsService) {
+	public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService userDetailsService) {
 
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
-        this.userDetailsService = userDetailsService;
-    }
+		this.authenticationManagerBuilder = authenticationManagerBuilder;
+		this.userDetailsService = userDetailsService;
+	}
 
-    @PostConstruct
-    public void init() {
-        try {
-            authenticationManagerBuilder
-                .userDetailsService(userDetailsService)
-                    .passwordEncoder(passwordEncoder());
-        } catch (Exception e) {
-            throw new BeanInitializationException("Security configuration failed", e);
-        }
-    }
+	@PostConstruct
+	public void init() {
+		try {
+			authenticationManagerBuilder
+			.userDetailsService(userDetailsService)
+			.passwordEncoder(passwordEncoder());
+		} catch (Exception e) {
+			throw new BeanInitializationException("Security configuration failed", e);
+		}
+	}
 
-    @Bean
-    public AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
-        return new AjaxLogoutSuccessHandler();
-    }
+	@Bean
+	public AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
+		return new AjaxLogoutSuccessHandler();
+	}
 
-    @Bean
-    public Http401UnauthorizedEntryPoint http401UnauthorizedEntryPoint() {
-        return new Http401UnauthorizedEntryPoint();
-    }
+	@Bean
+	public Http401UnauthorizedEntryPoint http401UnauthorizedEntryPoint() {
+		return new Http401UnauthorizedEntryPoint();
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-            .antMatchers(HttpMethod.OPTIONS, "/**")
-            .antMatchers("/app/**/*.{js,html}")
-            .antMatchers("/i18n/**")
-            .antMatchers("/content/**")
-            .antMatchers("/swagger-ui/index.html")
-            .antMatchers("/api/register")
-            .antMatchers("/api/activate")
-            .antMatchers("/api/account/reset_password/init")
-            .antMatchers("/api/account/reset_password/finish")
-            //this line gives full access to all action and state api services
-            .antMatchers("/api/action/**")
-            .antMatchers("/api/state/**")
-            .antMatchers("/test/**")
-            .antMatchers("/h2-console/**");
-    }
+	@Override
+	public void configure(WebSecurity web) throws Exception {
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
-            .httpBasic().realmName("ramadama")
-            .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-                .requestMatchers().antMatchers("/oauth/authorize")
-            .and()
-                .authorizeRequests()
-                .antMatchers("/oauth/authorize").authenticated();
-    }
+		//        web.ignoring()
+		//            .antMatchers(HttpMethod.OPTIONS, "/**")
+		//            .antMatchers("/app/**/*.{js,html}")
+		//            .antMatchers("/i18n/**")
+		//            .antMatchers("/content/**")
+		//            .antMatchers("/swagger-ui/index.html")
+		//            .antMatchers("/api/register")
+		//            .antMatchers("/api/activate")
+		//            .antMatchers("/api/account/reset_password/init")
+		//            .antMatchers("/api/account/reset_password/finish")
+		//            .antMatchers("/test/**")
+		//            .antMatchers("/h2-console/**");
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
 
-    @Bean
-    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
-        return new SecurityEvaluationContextExtension();
-    }
+		//this line gives full access to all  api services
+		web.ignoring().antMatchers("/**");
+	}
+
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http
+		.httpBasic().realmName("ramadama")
+		.and()
+		.sessionManagement()
+		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+		.requestMatchers().antMatchers("/oauth/authorize")
+		.and()
+		.authorizeRequests()
+		.antMatchers("/oauth/authorize").authenticated();
+	}
+
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+
+	@Bean
+	public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+		return new SecurityEvaluationContextExtension();
+	}
 }
