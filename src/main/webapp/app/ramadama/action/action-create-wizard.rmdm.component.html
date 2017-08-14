@@ -1,7 +1,19 @@
-<label *ngIf="!stateBefore.pictureData" for="input-Before" class="btn btn-primary">Bild von vermüllter Stelle machen
-    <input style="display: none;" id="input-Before" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateBefore)" />
-</label>
-<label *ngIf="!stateAfter.pictureData" for="input-Before" class="btn btn-primary">Bild von aufgeräumter Stelle machen
-    <input style="display: none;" id="input-Before" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateAfter)" />
-</label>
+<div class="modal-header">
+    <h4 class="modal-title" jhiTranslate="entity.delete.title">Stelle aufräumen</h4>
 
+</div>
+<div class="modal-body">
+    <jhi-alert-error></jhi-alert-error>
+    <p>Fotografiere die Stelle vor und nach dem Aufräumen</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary float-right create-action" routerLink="/action-create-new">
+        Stelle aufräumen
+    </button>
+    <label *ngIf="!stateBefore.pictureData" for="input-Before" class="btn btn-primary">Bild von vermüllter Stelle machen
+        <input style="display: none;" id="input-Before" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateBefore)" />
+    </label>
+    <label *ngIf="!stateAfter.pictureData" for="input-Before" class="btn btn-primary">Bild von aufgeräumter Stelle machen
+        <input style="display: none;" id="input-Before" type="file" accept="image/*" capture  (change)="setPictureDataAndSave($event, stateAfter)" />
+    </label>
+</div>
