@@ -131,7 +131,7 @@ export class ActionCreateWizardComponent {
 }
 @Component({
     selector: 'jhi-action-create-popup',
-    template: '<div>codemarker=et489to</div>'
+    template: ''
 })
 export class ActionCreateWizardPopupComponent implements OnInit, OnDestroy {
 
@@ -144,11 +144,7 @@ export class ActionCreateWizardPopupComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        alert('hello popup ');
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.actionPopupService
-                .open(ActionCreateWizardComponent);
-        });
+        this.actionPopupService.open(ActionCreateWizardComponent);
     }
 
     ngOnDestroy() {
