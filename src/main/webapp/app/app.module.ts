@@ -12,6 +12,7 @@ import { RamadamaEntityModule } from './entities/entity.module';
 
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
+import { ActionRmdmModule } from './ramadama/action/action.rmdm.module';
 
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
@@ -36,6 +37,7 @@ import {
         RamadamaAdminModule,
         RamadamaAccountModule,
         RamadamaEntityModule,
+        ActionRmdmModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
