@@ -66,22 +66,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 
-		//        web.ignoring()
-		//            .antMatchers(HttpMethod.OPTIONS, "/**")
-		//            .antMatchers("/app/**/*.{js,html}")
-		//            .antMatchers("/i18n/**")
-		//            .antMatchers("/content/**")
-		//            .antMatchers("/swagger-ui/index.html")
-		//            .antMatchers("/api/register")
-		//            .antMatchers("/api/activate")
-		//            .antMatchers("/api/account/reset_password/init")
-		//            .antMatchers("/api/account/reset_password/finish")
-		//            .antMatchers("/test/**")
-		//            .antMatchers("/h2-console/**");
+		        web.ignoring()
+		            .antMatchers(HttpMethod.OPTIONS, "/**")
+		            .antMatchers("/app/**/*.{js,html}")
+		            .antMatchers("/i18n/**")
+		            .antMatchers("/content/**")
+		            .antMatchers("/swagger-ui/index.html")
+//		            .antMatchers("/api/register")
+//		            .antMatchers("/api/activate")
+//		            .antMatchers("/api/account/reset_password/init")
+//		            .antMatchers("/api/account/reset_password/finish")
+		            .antMatchers("/api/state*/**")
+		            .antMatchers("/api/action*/**")
+		            .antMatchers("/test/**")
+		            .antMatchers("/h2-console/**");
 
-
-		//this line gives full access to all  api services
-		web.ignoring().antMatchers("/**");
 	}
 
 	@Override
