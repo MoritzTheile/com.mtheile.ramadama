@@ -1,13 +1,18 @@
 package com.mtheile.ramadama.web.rest;
 
-import com.mtheile.ramadama.RamadamaApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.mtheile.ramadama.domain.State;
-import com.mtheile.ramadama.repository.StateRepository;
-import com.mtheile.ramadama.repository.search.StateSearchRepository;
-import com.mtheile.ramadama.service.dto.StateDTO;
-import com.mtheile.ramadama.service.mapper.StateMapper;
-import com.mtheile.ramadama.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,13 +29,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.mtheile.ramadama.RamadamaApp;
+import com.mtheile.ramadama.domain.State;
+import com.mtheile.ramadama.repository.StateRepository;
+import com.mtheile.ramadama.service.dto.StateDTO;
+import com.mtheile.ramadama.service.mapper.StateMapper;
+import com.mtheile.ramadama.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the StateResource REST controller.
@@ -53,9 +57,6 @@ public class StateResourceIntTest {
     private StateMapper stateMapper;
 
     @Autowired
-    private StateSearchRepository stateSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -74,7 +75,7 @@ public class StateResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        StateResource stateResource = new StateResource(stateRepository, stateMapper, stateSearchRepository);
+        StateResource stateResource = new StateResource(stateRepository, stateMapper);
         this.restStateMockMvc = MockMvcBuilders.standaloneSetup(stateResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -96,33 +97,9 @@ public class StateResourceIntTest {
 
     @Before
     public void initTest() {
-        stateSearchRepository.deleteAll();
         state = createEntity(em);
     }
 
-    @Test
-    @Transactional
-    public void createState() throws Exception {
-        int databaseSizeBeforeCreate = stateRepository.findAll().size();
-
-        // Create the State
-        StateDTO stateDTO = stateMapper.toDto(state);
-        restStateMockMvc.perform(post("/api/states")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(stateDTO)))
-            .andExpect(status().isCreated());
-
-        // Validate the State in the database
-        List<State> stateList = stateRepository.findAll();
-        assertThat(stateList).hasSize(databaseSizeBeforeCreate + 1);
-        State testState = stateList.get(stateList.size() - 1);
-        assertThat(testState.getPictureData()).isEqualTo(DEFAULT_PICTURE_DATA);
-        assertThat(testState.getPictureDataContentType()).isEqualTo(DEFAULT_PICTURE_DATA_CONTENT_TYPE);
-
-        // Validate the State in Elasticsearch
-        State stateEs = stateSearchRepository.findOne(testState.getId());
-        assertThat(stateEs).isEqualToComparingFieldByField(testState);
-    }
 
     @Test
     @Transactional
@@ -187,7 +164,6 @@ public class StateResourceIntTest {
     public void updateState() throws Exception {
         // Initialize the database
         stateRepository.saveAndFlush(state);
-        stateSearchRepository.save(state);
         int databaseSizeBeforeUpdate = stateRepository.findAll().size();
 
         // Update the state
@@ -210,7 +186,7 @@ public class StateResourceIntTest {
         assertThat(testState.getPictureDataContentType()).isEqualTo(UPDATED_PICTURE_DATA_CONTENT_TYPE);
 
         // Validate the State in Elasticsearch
-        State stateEs = stateSearchRepository.findOne(testState.getId());
+        State stateEs = stateRepository.findOne(testState.getId());
         assertThat(stateEs).isEqualToComparingFieldByField(testState);
     }
 
@@ -238,7 +214,6 @@ public class StateResourceIntTest {
     public void deleteState() throws Exception {
         // Initialize the database
         stateRepository.saveAndFlush(state);
-        stateSearchRepository.save(state);
         int databaseSizeBeforeDelete = stateRepository.findAll().size();
 
         // Get the state
@@ -247,7 +222,7 @@ public class StateResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
-        boolean stateExistsInEs = stateSearchRepository.exists(state.getId());
+        boolean stateExistsInEs = stateRepository.exists(state.getId());
         assertThat(stateExistsInEs).isFalse();
 
         // Validate the database is empty
@@ -260,7 +235,6 @@ public class StateResourceIntTest {
     public void searchState() throws Exception {
         // Initialize the database
         stateRepository.saveAndFlush(state);
-        stateSearchRepository.save(state);
 
         // Search the state
         restStateMockMvc.perform(get("/api/_search/states?query=id:" + state.getId()))
