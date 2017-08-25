@@ -1,0 +1,24 @@
+jdbc:postgresql://ec2-54-75-239-190.eu-west-1.compute.amazonaws.com/dfktb251mp9pct?user=vhgqlssxdvnywk&password=7a50ffaa718002b883a1de591a92b8878168a3c2628cf4493c82df22a12e819a&ssl=true
+
+postgres://vhgqlssxdvnywk:7a50ffaa718002b883a1de591a92b8878168a3c2628cf4493c82df22a12e819a@ec2-54-75-239-190.eu-west-1.compute.amazonaws.com:5432/dfktb251mp9pct
+
+java -jar ramadama-0.0.1-SNAPSHOT.war --spring.profiles.active=prod
+
+JDBC_DATABASE_URL=postgres://ec2-54-75-239-190.eu-west-1.compute.amazonaws.com:5432/dfktb251mp9pct
+
+JDBC_DATABASE_USERNAME=vhgqlssxdvnywk
+JDBC_DATABASE_PASSWORD=7a50ffaa718002b883a1de591a92b8878168a3c2628cf4493c82df22a12e819a
+
+
+
+java -jar ramadama-0.0.1-SNAPSHOT.war --spring.profiles.active=prod --spring.datasource.url=jdbc:postgresql://ec2-54-75-239-190.eu-west-1.compute.amazonaws.com/dfktb251mp9pct&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory --spring.datasource.username=vhgqlssxdvnywk --spring.datasource.password=7a50ffaa718002b883a1d
+e591a92b8878168a3c2628cf4493c82df22a12e819a
+
+
+java -jar ramadama-0.0.1-SNAPSHOT.war --spring.profiles.active=prod --spring.datasource.url=jdbc:postgresql://ec2-54-75-239-190.eu-west-1.compute.amazonaws.com/dfktb251mp9pct?user=vhgqlssxdvnywk&password=7a50ffaa718002b883a1de591a92b8878168a3c2628cf4493c82df22a12e819a&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&sslmode=require
+
+mvn -Pprod  --spring.profiles.active=prod --spring.datasource.url=jdbc:postgresql://ec2-54-75-239-190.eu-west-1.compute.amazonaws.com/dfktb251mp9pct?user=vhgqlssxdvnywk&password=7a50ffaa718002b883a1de591a92b8878168a3c2628cf4493c82df22a12e819a&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&sslmode=require
+			
+jdbc:postgresql://aa135jzc4bsbv6.chp07jsm0quq.eu-central-1.rds.amazonaws.com:5432?user=MoritzTheile&password=mutzmutz
+jdbc:postgresql://aa1vgata1x9dpfb.chp07jsm0quq.eu-central-1.rds.amazonaws.com:5432/ebdb?user=MoritzTheile&password=mutzmutz
+
