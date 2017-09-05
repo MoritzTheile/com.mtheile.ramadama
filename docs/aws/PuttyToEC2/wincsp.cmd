@@ -1,0 +1,1 @@
+Start "" /B "C:\Program Files (x86)\WinSCP\WinSCP.exe" scp://ec2-user@54.93.185.132:22/ /privatekey="C:\Users\MoritzTheile\jhipster_projects\ramadama\docs\aws\JenkinsServerKeyPair.ppk"

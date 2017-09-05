@@ -1,1 +1,1 @@
-Start "" /B "C:\Program Files\PuTTY\putty.exe"
+Start "" /B "C:\Program Files\PuTTY\putty.exe" -ssh ec2-user@54.93.185.132 22 -i "C:\Users\MoritzTheile\jhipster_projects\ramadama\docs\aws\JenkinsServerKeyPair.ppk"
