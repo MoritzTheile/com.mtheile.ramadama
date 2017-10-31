@@ -1,0 +1,32 @@
+https://youtu.be/dzdjP3CPOCs: three hour presentation of jhipster creator
+
+00:42:45 Initial Git commit (git init, git add ., git commit -m "initial commit", git remote add origin https://github.com/MoritzTheile/teamtable.git, git push -u origin master)
+00:02:55 Tech-Dependency-Overview
+01:07 Upgrading jHipster	
+01:18 Spring security
+01:26 Fluent Methods
+01:30 Liquibase
+01:35 Gulp&Browsersync
+01:37:00 new themes (e.g. Material) with bower
+01:38:30 Profiles
+01:45	JUnit Tests
+0...	more tests 
+45:30	Generating a WishList Entity
+48:00	restricting wish list to current user
+1:07	updating jHipster and merge versions
+1:16	restricting access to Wish
+1:23    automatically connect a user to wish lists he creates
+1:26	fluent methods in JPA entities
+1:28	Liquibase "for adding a field on entity just add it to java class and change liquibase file manually" (showcase with priority field)
+1:34	Browsersync
+1:37	Bootstrap material design
+1:39	Profiles (prod/dev)
+1:51	Sonar
+1:52	Jenkins Conf
+1:55	packaging for production
+2:00	Docker
+2:02	Kubernetes	
+2:04	CloudFoundry
+2:05	Heroku
+2:09	JDL Studio
+2:18	Microsservices

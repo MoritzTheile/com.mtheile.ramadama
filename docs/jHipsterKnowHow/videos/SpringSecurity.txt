@@ -1,0 +1,7 @@
+https://www.youtube.com/watch?v=Q3yStECBuAg&t=58s
+
+16:24 Big Picture: Spring Security Filter Stack, Dispatcher Servlet/Controller, AuthenticationManager, Security Context
+
+spring-security.xml
+
+17:40 code demo

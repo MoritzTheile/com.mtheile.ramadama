@@ -1,0 +1,15 @@
+https://www.youtube.com/watch?v=N5bN-wvLZMg
+
+04:30 How to install...
+08:00 Roadmap
+11:00 HTTP/2 on Heroku
+17:00 Build Tools Maven/Gradel, NPM/Yarn
+17:30 webpack explained
+19:00 microservices Demo
+21:30 Technology Radar
+26:00 Deploying to Production
+25:40 How to split a monolith into microservice+gateway
+27:20 Microservices with Docker
+27:40 demo of monolith -> gateway
+31:20 create jHipster project with entities
+45:00 JHipster-Console

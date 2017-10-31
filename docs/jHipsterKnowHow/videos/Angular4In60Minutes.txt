@@ -1,0 +1,9 @@
+https://www.youtube.com/watch?v=KhzGSHNhnbI
+
+09:40 Components / Decorator
+11:10 Services
+
+creating form
+
+42:00 two way binding from template to component and other way around
+48:09 creating a service

@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Nothing to do in the install phase...
+  pre_build:
+    commands:
+      - echo Nothing to do in the pre_build phase...
+  build:
+    commands:
+      - echo Build started on `date`
+  post_build:
+    commands:
+      - mvn -DSTRIPE_API_KEY=sk_test_3IIXoksXxyx0TmnEDdRe249H package
+      - mv com.mtheile.f21web.app/target/app-0.0.1-SNAPSHOT.war app-0.0.1-SNAPSHOT.war 
+      - echo Build completed on `date`
+      # - pwd
+      # - ls -l
+      # see https://stackoverflow.com/questions/37144891/aws-codepipeline-elasticbeanstalk-deploy-failure
+      # - mkdir -p com.mtheile.f21web.app/target/ && touch com.mtheile.f21web.app/target/deleteme.war
+artifacts:
+  files:
+  	# see http://docs.aws.amazon.com/codebuild/latest/userguide/sample-elastic-beanstalk.html#sample-elastic-beanstalk-manual
+    - app-0.0.1-SNAPSHOT.war
+    - .ebextensions/**/*
+    # - '/**/*'
+    # - com.mtheile.f21web.app/target/app-0.0.1-SNAPSHOT.war
+    # - com.mtheile.f21web.app/target/deleteme.war
+    # discard-paths: yes
+  # base-directory: 'com.mtheile.f21web.app/target/app-0.0.1-SNAPSHOT'
